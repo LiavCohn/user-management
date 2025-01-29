@@ -1,0 +1,96 @@
+@model UserManagementApp.Models.User
+
+@{
+    ViewData["Title"] = "Create User";
+}
+
+@{
+    var errorMessage = ViewData["ErrorMessage"] as string;
+}
+
+@if (!string.IsNullOrEmpty(errorMessage))
+{
+    <div class="alert alert-danger" role="alert">
+        @errorMessage
+    </div>
+
+}
+
+<h2>Create User</h2>
+
+<form asp-action="Create" method="post" class="needs-validation" novalidate>
+    <div class="row g-3">
+        <div class="col-md-6">
+            <label for="UserName" class="form-label">Username</label>
+            <input asp-for="UserName" class="form-control" required />
+            <span asp-validation-for="UserName" class="text-danger"></span>
+        </div>
+
+        <div class="col-md-6">
+            <label for="Password" class="form-label">Password</label>
+            <input asp-for="Password" type="password" class="form-control" required />
+            <span asp-validation-for="Password" class="text-danger"></span>
+        </div>
+
+        <div class="col-md-6">
+            <label for="FirstName" class="form-label">First Name</label>
+            <input asp-for="Data.FirstName" class="form-control" required />
+            <span asp-validation-for="Data.FirstName" class="text-danger"></span>
+        </div>
+
+        <div class="col-md-6">
+            <label for="LastName" class="form-label">Last Name</label>
+            <input asp-for="Data.LastName" class="form-control" required />
+            <span asp-validation-for="Data.LastName" class="text-danger"></span>
+        </div>
+
+        <div class="col-md-6">
+            <label for="Phone" class="form-label">Phone</label>
+            <input asp-for="Data.Phone" class="form-control" required />
+            <span asp-validation-for="Data.Phone" class="text-danger"></span>
+        </div>
+
+        <div class="col-md-6">
+            <label for="Email" class="form-label">Email</label>
+            <input asp-for="Data.Email" type="email" class="form-control" required />
+            <span asp-validation-for="Data.Email" class="text-danger"></span>
+        </div>
+
+        <div class="col-md-6">
+            <label for="UserGroupID" class="form-label">User Group ID</label>
+            <input asp-for="UserGroupID" type="number" class="form-control" />
+            <span asp-validation-for="UserGroupID" class="text-danger"></span>
+        </div>
+
+        <div class="col-md-6">
+            <div class="form-check">
+                <input asp-for="Active" class="form-check-input" type="checkbox" />
+                <label for="Active" class="form-check-label">Active</label>
+            </div>
+        </div>
+    </div>
+
+    <div class="mt-3">
+        <button type="submit" class="btn btn-primary" disabled>Create User</button>
+        <a asp-action="Index" class="btn btn-secondary">Cancel</a>
+    </div>
+</form>
+
+<script>
+    document.addEventListener("input", function () {
+        const form = document.querySelector("form");
+        const createButton = document.querySelector("button[type='submit']");
+
+        createButton.disabled = !form.checkValidity();
+    });
+
+    document.addEventListener("DOMContentLoaded", function () {
+        var errorDiv = document.getElementsByClassName("alert")[0]
+
+        if (errorDiv) {
+            setTimeout(function () {
+                errorDiv.style.display = 'none';
+            }, 3000);
+        }
+    });
+</script>

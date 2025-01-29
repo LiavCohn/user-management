@@ -1,0 +1,103 @@
+@model List<User>
+@{
+    ViewData["Title"] = "User Management";
+}
+
+@{
+    var errorMessage = ViewData["ErrorMessage"] as string;
+}
+
+@if (!string.IsNullOrEmpty(errorMessage))
+{
+    <div class="alert alert-danger" role="alert">
+        @errorMessage
+    </div>
+
+}
+
+<h2>User Management</h2>
+
+<form method="get" id="filterForm">
+    <label for="statusFilter">Filter by Status:</label>
+    <select name="statusFilter" id="statusFilter" onchange="document.getElementById('filterForm').submit();">
+        <option value="">All</option>
+        <option value="Active">Active</option>
+        <option value="Inactive">Inactive</option>
+    </select>
+
+    <label for="searchQuery">Search:</label>
+    <input type="text" name="searchQuery" id="searchQuery" value="@ViewData["searchQuery"]" />
+
+    <button type="submit">Search</button>
+    <a href="@Url.Action("Index", "User")">
+        <button type="button">Refresh</button>
+    </a>
+    <a asp-action="Create" class="btn btn-primary">Create New User</a>
+
+</form>
+
+
+<table>
+    <thead>
+        <tr>
+            <th>UserID</th>
+            <th>Username</th>
+            <th>First Name</th>
+            <th>Last Name</th>
+            <th>Phone</th>
+            <th>Email</th>
+            <th>Status</th>
+            <th>Created At</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var user in Model)
+        {
+            <tr>
+                <td>@user.UserID</td>
+                <td>@user.UserName</td>
+                <td>@user.Data.FirstName</td>
+                <td>@user.Data.LastName</td>
+                <td>@user.Data.Phone</td>
+                <td>@user.Data.Email</td>
+                <td>@user.Active</td>
+                <td>@user.Data.CreateionDate</td>
+                <td>
+                    <form action="@Url.Action("Delete", new { userID = user.UserID })" method="post">
+                        <button type="submit">Delete</button>
+                    </form>
+                </td>
+                <td>
+                    <a href="@Url.Action("Edit", new { id = user.UserID })">Edit</a>
+
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+@{
+    if (!Model.Any())
+    {
+        <p>No users found.</p>
+    }
+}
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const statusFilter = "@ViewData["statusFilter"]";
+        if (statusFilter) {
+            const dropdown = document.getElementById("statusFilter");
+            dropdown.value = statusFilter;
+        }
+
+        var errorDiv = document.getElementsByClassName("alert")[0]
+
+        if (errorDiv) {
+            setTimeout(function () {
+                errorDiv.style.display = 'none';
+            }, 3000);
+        }
+    });
+</script>
